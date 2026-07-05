@@ -63,7 +63,13 @@ class GiftPaymentSync
             return;
         }
 
-        Mail::to($recipient)->send(new GiftReceived($gift));
+        try {
+            Mail::to($recipient)->send(new GiftReceived($gift));
+        } catch (\Throwable $e) {
+            logger()->error('Gift notification email failed to send: '.$e->getMessage());
+
+            return;
+        }
 
         $gift->update(['notification_sent_at' => now()]);
     }
