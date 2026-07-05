@@ -103,20 +103,21 @@
 
         .photo-frame {
             position: relative;
-            border-radius: 1.5rem;
             overflow: hidden;
             aspect-ratio: 3/4;
             max-height: 50svh;
-            box-shadow: 0 24px 70px rgba(107,82,63,.18);
+            /* Parallelogram — top-left tucked in, bottom-right tucked in */
+            clip-path: polygon(7% 0%, 100% 0%, 93% 100%, 0% 100%);
         }
         .photo-frame img {
             width: 100%; height: 100%;
             object-fit: cover; display: block;
+            /* scale slightly so clipped edges don't show empty space */
+            transform: scaleX(1.08);
         }
         .photo-frame::after {
             content: '';
             position: absolute; inset: 0;
-            border-radius: inherit;
             box-shadow: inset 0 0 0 1.5px rgba(255,255,255,.4);
             pointer-events: none; z-index: 1;
         }
