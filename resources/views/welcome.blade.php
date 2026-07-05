@@ -294,13 +294,13 @@
             padding: 5rem 1.25rem 6rem;
             overflow: hidden;
         }
-        /* Faint photo watermark behind the form */
+        /* Photo watermark behind the form */
         .gift::before {
             content: '';
             position: absolute;
             inset: 0;
             background: url('/images/jidenna-dedication-hero.png') center / cover no-repeat;
-            opacity: .07;
+            opacity: .18;
             z-index: 0;
         }
         .gift-inner { position: relative; z-index: 1; max-width: 1140px; margin: 0 auto; }
