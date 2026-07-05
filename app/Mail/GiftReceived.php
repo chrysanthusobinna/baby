@@ -13,7 +13,7 @@ class GiftReceived extends Mailable
     {
         $mail = $this
             ->subject('New gift received for Jidenna')
-            ->text('emails.gift-received');
+            ->view('emails.gift-received');
 
         if ($this->gift->payer_email) {
             $mail->replyTo($this->gift->payer_email, $this->gift->payer_name ?: null);

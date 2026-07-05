@@ -664,18 +664,6 @@
             @csrf
             <input id="hiddenAmt" type="hidden" name="amount" value="{{ old('amount') }}">
 
-            <label class="f-label" for="payerName">Your name</label>
-            <div class="input-row">
-                <input id="payerName" class="f-input plain" name="payer_name" type="text" maxlength="120"
-                       placeholder="Your full name" value="{{ old('payer_name') }}" autocomplete="name" required>
-            </div>
-
-            <label class="f-label" for="payerEmail">Your email</label>
-            <div class="input-row">
-                <input id="payerEmail" class="f-input plain" name="payer_email" type="email" maxlength="190"
-                       placeholder="you@example.com" value="{{ old('payer_email') }}" autocomplete="email" required>
-            </div>
-
             <fieldset style="border:none;padding:0;margin:0 0 1.25rem;">
                 <legend class="f-label" style="float:left;width:100%;margin-bottom:.75rem;">Choose an amount</legend>
                 <div class="amounts" style="clear:both;">

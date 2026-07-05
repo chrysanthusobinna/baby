@@ -13,8 +13,6 @@ class CheckoutController extends Controller
     {
         $validated = $request->validate([
             'amount' => ['required', 'integer', 'min:1', 'max:10000'],
-            'payer_name' => ['required', 'string', 'max:120'],
-            'payer_email' => ['required', 'email', 'max:190'],
             'message' => ['nullable', 'string', 'max:500'],
         ]);
 
@@ -30,8 +28,6 @@ class CheckoutController extends Controller
         $gift = Gift::create([
             'amount' => $validated['amount'],
             'currency' => 'gbp',
-            'payer_name' => $validated['payer_name'],
-            'payer_email' => $validated['payer_email'],
             'message' => $validated['message'] ?? null,
             'status' => 'pending',
         ]);
@@ -40,8 +36,8 @@ class CheckoutController extends Controller
             $session = $stripe->checkout->sessions->create([
                 'mode' => 'payment',
                 'payment_method_types' => ['card'],
-                'customer_email' => $validated['payer_email'],
                 'customer_creation' => 'always',
+                'billing_address_collection' => 'required',
                 'success_url' => route('payment.success').'?session_id={CHECKOUT_SESSION_ID}',
                 'cancel_url' => route('payment.cancel'),
                 'line_items' => [[
@@ -62,9 +58,6 @@ class CheckoutController extends Controller
                     'occasion' => 'jidenna_baby_welcome',
                     'gift_id' => (string) $gift->id,
                     'gift_amount_gbp' => (string) $validated['amount'],
-                    'payer_name' => $validated['payer_name'],
-                    'payer_email' => $validated['payer_email'],
-                    'baby_message' => $validated['message'] ?? '',
                 ],
             ]);
 
