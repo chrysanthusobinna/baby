@@ -41,33 +41,33 @@
         .bubbles-layer {
             position: fixed;
             inset: 0;
-            z-index: 10;   /* above section z-index:1 so bubbles float on top */
+            /* sit above section backgrounds (z:1) but rings have no fill
+               so text underneath is fully readable */
+            z-index: 2;
             pointer-events: none;
             overflow: hidden;
         }
 
-        /* CSS baseline bubbles — visible instantly, no JS needed */
+        /* CSS baseline bubbles — visible instantly, no JS needed.
+           Pure rings, no fill, so they never obstruct text. */
         .bubbles-layer::before,
         .bubbles-layer::after {
             content: '';
             position: absolute;
             border-radius: 50%;
+            background: transparent;
         }
         .bubbles-layer::before {
-            width: 190px; height: 190px;
-            top: 12%; left: 6%;
-            border: 2.5px solid rgba(233,138,161,.72);
-            background: radial-gradient(circle at 32% 28%, rgba(255,255,255,.35) 0%, rgba(233,138,161,.10) 50%, transparent 70%);
-            box-shadow: inset 0 0 30px rgba(255,255,255,.18), 0 4px 20px rgba(233,138,161,.15);
-            animation: bfl-1 26s ease-in-out infinite;
+            width: 200px; height: 200px;
+            top: 10%; left: 4%;
+            border: 1.5px solid rgba(233,138,161,.30);
+            animation: bfl-1 38s ease-in-out infinite;
         }
         .bubbles-layer::after {
-            width: 140px; height: 140px;
-            top: 55%; right: 8%;
-            border: 2.5px solid rgba(125,160,139,.68);
-            background: radial-gradient(circle at 32% 28%, rgba(255,255,255,.35) 0%, rgba(125,160,139,.10) 50%, transparent 70%);
-            box-shadow: inset 0 0 22px rgba(255,255,255,.18), 0 4px 16px rgba(125,160,139,.15);
-            animation: bfl-3 34s ease-in-out infinite;
+            width: 150px; height: 150px;
+            top: 50%; right: 6%;
+            border: 1.5px solid rgba(125,160,139,.28);
+            animation: bfl-3 46s ease-in-out infinite;
         }
 
         @keyframes bfl-1 {
@@ -764,52 +764,43 @@
     if (hidden.value) amts.forEach(b => { if (b.dataset.amount === hidden.value) { b.classList.add('picked'); b.setAttribute('aria-pressed', 'true'); } });
 
     // ── Floating bubbles ─────────────────────
+    // Pure rings only — no fill — so they never obscure text.
+    // Sections have z-index:1; bubble layer sits at z-index:0 (behind),
+    // but sections are given no background on the z-axis, so rings
+    // show through via the section's own background colour.
     (function() {
         const layer = document.getElementById('bubblesLayer');
-        // [r, g, b] of border color
         const palette = [
-            [247, 154, 130],  // warm peach
+            [247, 154, 130],  // peach
             [233, 138, 161],  // rose
             [125, 160, 139],  // sage
             [217, 164,  65],  // gold
-            [180, 210, 200],  // light sage
-            [250, 190, 160],  // apricot
+            [180, 210, 200],  // pale sage
+            [250, 200, 175],  // apricot
         ];
-        const anims  = ['bfl-1','bfl-2','bfl-3','bfl-4'];
-        const isMob  = window.innerWidth < 600;
-        const count  = isMob ? 14 : 26;
+        const anims = ['bfl-1','bfl-2','bfl-3','bfl-4'];
+        const isMob = window.innerWidth < 600;
+        const count = isMob ? 12 : 22;
 
         for (let i = 0; i < count; i++) {
-            const el   = document.createElement('div');
-            const size = isMob ? (36 + Math.random() * 90) : (45 + Math.random() * 130);
+            const el  = document.createElement('div');
+            const sz  = isMob ? (40 + Math.random() * 100) : (50 + Math.random() * 140);
             const [r,g,b] = palette[Math.floor(Math.random() * palette.length)];
-            const opacity  = 0.50 + Math.random() * 0.35;   // 0.50 – 0.85 border opacity
-            const dur      = 18 + Math.random() * 32;        // 18s – 50s
-            const delay    = -(Math.random() * dur);          // pre-start so they're already moving
-            const anim     = anims[Math.floor(Math.random() * anims.length)];
-            const left     = Math.random() * 100;
-            const top      = Math.random() * 120;             // allow some below fold
+            const op  = 0.18 + Math.random() * 0.18;  // 0.18–0.36: very soft rings
+            const bw  = 1 + Math.random() * 0.8;       // 1–1.8px thin border
+            const dur = 35 + Math.random() * 45;       // 35s–80s very slow drift
+            const delay = -(Math.random() * dur);       // pre-offset so page loads mid-animation
 
-            // Soap-bubble look: thin colored ring + inner radial highlight
             el.style.cssText = `
-                position: absolute;
-                width:  ${size}px;
-                height: ${size}px;
-                left:   ${left}%;
-                top:    ${top}%;
-                border-radius: 50%;
-                border: ${1.5 + Math.random()}px solid rgba(${r},${g},${b},${opacity});
-                background: radial-gradient(
-                    circle at 32% 28%,
-                    rgba(255,255,255,0.30) 0%,
-                    rgba(${r},${g},${b},0.06) 40%,
-                    transparent 70%
-                );
-                box-shadow:
-                    inset 0 0 ${size * 0.18}px rgba(255,255,255,0.22),
-                    0 4px ${size * 0.15}px rgba(${r},${g},${b},0.10);
-                animation: ${anim} ${dur}s ${delay}s ease-in-out infinite;
-                will-change: transform;
+                position:absolute;
+                width:${sz}px; height:${sz}px;
+                left:${Math.random()*100}%;
+                top:${Math.random()*110}%;
+                border-radius:50%;
+                border:${bw}px solid rgba(${r},${g},${b},${op});
+                background:transparent;
+                animation:${anims[i%4]} ${dur}s ${delay}s ease-in-out infinite;
+                will-change:transform;
             `;
             layer.appendChild(el);
         }
