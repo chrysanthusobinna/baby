@@ -65,6 +65,14 @@ For social sharing previews, set `APP_URL` to the live domain before deployment:
 APP_URL=https://your-real-domain.com
 ```
 
+## Shared Hosting
+
+Best option: point the domain document root to the Laravel `public` folder.
+
+If your shared host cannot do that, this project includes a root `index.php` and root `.htaccess` that forward requests into `public` while still allowing local `php artisan serve` to work.
+
+Upload the full project to the hosting root, then visit the domain. Do not move files out of `public`; the root rewrite rules handle that.
+
 Set the Stripe webhook endpoint to:
 
 ```text
