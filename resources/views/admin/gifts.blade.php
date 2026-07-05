@@ -76,6 +76,17 @@
         }
         .pagination { margin: 1.5rem 0 2.5rem; }
         .empty { padding: 2rem; text-align: center; color: #786b60; }
+        .delete-btn {
+            border: 1px solid rgba(163,55,88,.25);
+            border-radius: 999px;
+            background: rgba(233,138,161,.1);
+            color: #a33758;
+            padding: .4rem .85rem;
+            font-size: .78rem;
+            font-weight: 800;
+            cursor: pointer;
+        }
+        .delete-btn:hover { background: rgba(233,138,161,.2); }
     </style>
 </head>
 <body>
@@ -111,6 +122,13 @@
                         <span class="status {{ $gift->status }}">{{ $gift->status }}</span>
                     </div>
                 </div>
+
+                <form method="POST" action="{{ route('admin.gifts.destroy', $gift) }}"
+                      onsubmit="return confirm('Delete this gift record?');" style="margin-bottom:.65rem;">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="delete-btn">Delete</button>
+                </form>
 
                 <div class="meta">
                     {{ $gift->created_at->format('j M Y, g:ia') }}

@@ -18,5 +18,6 @@ Route::get('/admin/login', [AdminController::class, 'showLogin'])->name('login')
 Route::post('/admin/login', [AdminController::class, 'login'])->name('admin.login.post');
 Route::middleware('auth')->group(function (): void {
     Route::get('/admin/gifts', [AdminController::class, 'gifts'])->name('admin.gifts');
+    Route::delete('/admin/gifts/{gift}', [AdminController::class, 'destroyGift'])->name('admin.gifts.destroy');
     Route::post('/admin/logout', [AdminController::class, 'logout'])->name('admin.logout');
 });

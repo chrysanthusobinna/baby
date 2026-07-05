@@ -67,15 +67,9 @@
                     </td>
                 </tr>
                 <tr>
-                    <td style="padding:10px 0; border-bottom:1px solid #f0ece6; font-size:13px; color:#9a9086;">Email</td>
-                    <td style="padding:10px 0; border-bottom:1px solid #f0ece6; font-size:14px; color:#2e2620; font-weight:600;">
+                    <td style="padding:10px 0; font-size:13px; color:#9a9086;">Email</td>
+                    <td style="padding:10px 0; font-size:14px; color:#2e2620; font-weight:600;">
                         {{ $gift->payer_email ?: 'Not provided yet' }}
-                    </td>
-                </tr>
-                <tr>
-                    <td style="padding:10px 0; font-size:13px; color:#9a9086;">Checkout session</td>
-                    <td style="padding:10px 0; font-size:13px; color:#9a9086; font-family:'Courier New',monospace;">
-                        {{ $gift->stripe_checkout_session_id ?: 'N/A' }}
                     </td>
                 </tr>
             </table>

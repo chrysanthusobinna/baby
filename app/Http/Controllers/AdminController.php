@@ -44,6 +44,13 @@ class AdminController extends Controller
         ]);
     }
 
+    public function destroyGift(Gift $gift)
+    {
+        $gift->delete();
+
+        return back()->with('status', 'Gift deleted.');
+    }
+
     public function logout(Request $request)
     {
         Auth::logout();
