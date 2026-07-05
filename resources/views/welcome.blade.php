@@ -403,6 +403,7 @@
             font-family: 'Inter', sans-serif; font-size: .97rem; font-weight: 600;
             outline: none; transition: border-color .18s, box-shadow .18s;
         }
+        .f-input.plain { padding-left: 1rem; }
         .f-input:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(217,164,65,.15); }
 
         .f-textarea {
@@ -662,6 +663,18 @@
         <form class="gift-card reveal d1" method="POST" action="{{ route('stripe.checkout') }}">
             @csrf
             <input id="hiddenAmt" type="hidden" name="amount" value="{{ old('amount') }}">
+
+            <label class="f-label" for="payerName">Your name</label>
+            <div class="input-row">
+                <input id="payerName" class="f-input plain" name="payer_name" type="text" maxlength="120"
+                       placeholder="Your full name" value="{{ old('payer_name') }}" autocomplete="name" required>
+            </div>
+
+            <label class="f-label" for="payerEmail">Your email</label>
+            <div class="input-row">
+                <input id="payerEmail" class="f-input plain" name="payer_email" type="email" maxlength="190"
+                       placeholder="you@example.com" value="{{ old('payer_email') }}" autocomplete="email" required>
+            </div>
 
             <fieldset style="border:none;padding:0;margin:0 0 1.25rem;">
                 <legend class="f-label" style="float:left;width:100%;margin-bottom:.75rem;">Choose an amount</legend>

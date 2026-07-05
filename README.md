@@ -23,6 +23,8 @@ A warm single-page Laravel website for welcoming baby Jidenna. Guests can read t
 - Stripe Checkout payment flow
 - Fixed amount buttons and custom amount entry
 - Optional guest message for the baby and family
+- Hidden admin area for viewing gifts and messages
+- Gift notification emails after successful payments
 - WhatsApp and social sharing meta tags
 - SQLite-ready Laravel setup
 
@@ -48,6 +50,7 @@ Add your Stripe keys to `.env`:
 ```env
 STRIPE_KEY=pk_test_your_publishable_key
 STRIPE_SECRET=sk_test_your_secret_key
+STRIPE_WEBHOOK_SECRET=whsec_your_webhook_secret
 ```
 
 Then clear cached config:
@@ -61,3 +64,41 @@ For social sharing previews, set `APP_URL` to the live domain before deployment:
 ```env
 APP_URL=https://your-real-domain.com
 ```
+
+Set the Stripe webhook endpoint to:
+
+```text
+https://your-real-domain.com/stripe/webhook
+```
+
+## Admin Setup
+
+There is no admin link on the public website. Visit the admin login URL directly:
+
+```text
+/admin/login
+```
+
+Add admin credentials to `.env`:
+
+```env
+ADMIN_EMAIL=admin@example.com
+ADMIN_NAME="Gift Admin"
+ADMIN_PASSWORD=choose-a-strong-password
+```
+
+Create or update the admin user in the `users` table:
+
+```powershell
+php artisan db:seed --class=AdminUserSeeder
+```
+
+## Gift Notifications
+
+Send paid gift notifications to a separate email address:
+
+```env
+GIFT_NOTIFICATION_EMAIL=gifts@example.com
+```
+
+Configure your mail provider through the usual Laravel `MAIL_*` environment variables.
