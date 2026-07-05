@@ -37,88 +37,59 @@
             overflow-x: hidden;
         }
 
-        /* ── ANIMATED ORB BACKGROUND ─────────────── */
-        .orbs {
+        /* ── BUBBLE BACKGROUND ───────────────────── */
+        .bubbles-layer {
             position: fixed;
             inset: 0;
-            z-index: 0;
+            z-index: 10;   /* above section z-index:1 so bubbles float on top */
             pointer-events: none;
             overflow: hidden;
         }
-        .orb {
+
+        /* CSS baseline bubbles — visible instantly, no JS needed */
+        .bubbles-layer::before,
+        .bubbles-layer::after {
+            content: '';
             position: absolute;
-            filter: blur(90px);
-            opacity: .18;
-            border-radius: 40% 60% 55% 45% / 50% 45% 55% 50%;
-            will-change: transform;
+            border-radius: 50%;
         }
-        .orb-1 {
-            width: min(55vw, 520px); height: min(55vw, 520px);
-            background: var(--peach);
-            top: -8%; left: -8%;
-            animation: drift-a 28s ease-in-out infinite;
+        .bubbles-layer::before {
+            width: 190px; height: 190px;
+            top: 12%; left: 6%;
+            border: 2.5px solid rgba(233,138,161,.72);
+            background: radial-gradient(circle at 32% 28%, rgba(255,255,255,.35) 0%, rgba(233,138,161,.10) 50%, transparent 70%);
+            box-shadow: inset 0 0 30px rgba(255,255,255,.18), 0 4px 20px rgba(233,138,161,.15);
+            animation: bfl-1 26s ease-in-out infinite;
         }
-        .orb-2 {
-            width: min(45vw, 420px); height: min(45vw, 420px);
-            background: var(--rose);
-            top: 10%; right: -10%;
-            animation: drift-b 35s ease-in-out infinite;
-        }
-        .orb-3 {
-            width: min(38vw, 360px); height: min(38vw, 360px);
-            background: var(--sage);
-            bottom: 15%; left: 2%;
-            animation: drift-c 42s ease-in-out infinite;
-        }
-        .orb-4 {
-            width: min(30vw, 280px); height: min(30vw, 280px);
-            background: var(--gold);
-            bottom: 5%; right: 10%;
-            animation: drift-d 50s ease-in-out infinite;
-        }
-        .orb-5 {
-            width: min(22vw, 200px); height: min(22vw, 200px);
-            background: var(--peach);
-            top: 55%; left: 40%;
-            animation: drift-a 60s ease-in-out infinite reverse;
-            opacity: .12;
+        .bubbles-layer::after {
+            width: 140px; height: 140px;
+            top: 55%; right: 8%;
+            border: 2.5px solid rgba(125,160,139,.68);
+            background: radial-gradient(circle at 32% 28%, rgba(255,255,255,.35) 0%, rgba(125,160,139,.10) 50%, transparent 70%);
+            box-shadow: inset 0 0 22px rgba(255,255,255,.18), 0 4px 16px rgba(125,160,139,.15);
+            animation: bfl-3 34s ease-in-out infinite;
         }
 
-        @keyframes drift-a {
+        @keyframes bfl-1 {
             0%,100% { transform: translate(0,0) scale(1); }
-            25%      { transform: translate(4vw,6vh) scale(1.06); }
-            50%      { transform: translate(-3vw,9vh) scale(.94); }
-            75%      { transform: translate(5vw,2vh) scale(1.03); }
+            30%     { transform: translate(20px,-24px) scale(1.05); }
+            65%     { transform: translate(-14px,16px) scale(0.96); }
         }
-        @keyframes drift-b {
-            0%,100% { transform: translate(0,0) scale(1); }
-            33%      { transform: translate(-5vw,7vh) scale(1.08); }
-            66%      { transform: translate(3vw,-4vh) scale(.96); }
-        }
-        @keyframes drift-c {
-            0%,100% { transform: translate(0,0) scale(1); }
-            20%      { transform: translate(3vw,-5vh) scale(1.04); }
-            60%      { transform: translate(-4vw,6vh) scale(.97); }
-        }
-        @keyframes drift-d {
+        @keyframes bfl-2 {
             0%,100% { transform: translate(0,0); }
-            40%      { transform: translate(-6vw,-4vh) scale(1.05); }
-            80%      { transform: translate(3vw,3vh) scale(.98); }
+            20%     { transform: translate(-22px,12px); }
+            55%     { transform: translate(16px,-20px); }
+            80%     { transform: translate(-8px,8px); }
         }
-
-        /* Floating petals / particles */
-        .petals { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
-        .petal {
-            position: absolute;
-            border-radius: 50% 30% 50% 30%;
-            opacity: 0;
-            animation: fall linear infinite;
+        @keyframes bfl-3 {
+            0%,100% { transform: translate(0,0) scale(1); }
+            40%     { transform: translate(18px,-10px) scale(1.07); }
+            70%     { transform: translate(-10px,18px) scale(0.95); }
         }
-        @keyframes fall {
-            0%   { opacity: 0; transform: translateY(-10vh) rotate(0deg); }
-            10%  { opacity: .55; }
-            90%  { opacity: .4; }
-            100% { opacity: 0; transform: translateY(105vh) rotate(540deg); }
+        @keyframes bfl-4 {
+            0%,100% { transform: translate(0,0); }
+            35%     { transform: translate(-16px,-18px); }
+            70%     { transform: translate(12px,10px); }
         }
 
         /* ── UTILITIES ──────────────────────────────── */
@@ -376,11 +347,11 @@
         }
         .gift-inner { max-width: 1140px; margin: 0 auto; }
 
-        .gift-header { margin-bottom: 2.5rem; }
+        .gift-header { margin: 0 auto 2.5rem; max-width: 40rem; text-align: center; }
         .g-eyebrow {
             font-size: .72rem; font-weight: 700; letter-spacing: .1em;
             text-transform: uppercase; color: var(--sage);
-            display: flex; align-items: center; gap: .55rem;
+            display: flex; align-items: center; justify-content: center; gap: .55rem;
             margin-bottom: .9rem;
         }
         .g-eyebrow::before { content: ''; width: 1.4rem; height: 2px; border-radius: 999px; background: currentColor; }
@@ -410,7 +381,10 @@
             padding: 1.75rem;
             box-shadow: 0 24px 70px rgba(107,82,63,.12);
             backdrop-filter: blur(16px);
+            max-width: 42rem;
+            margin: 0 auto;
         }
+        .alert { max-width: 42rem; margin-left: auto; margin-right: auto; }
 
         .f-label {
             display: block; font-size: .72rem; font-weight: 700;
@@ -546,15 +520,8 @@
 </head>
 <body>
 
-<!-- ─ Animated background ─────────────── -->
-<div class="orbs" aria-hidden="true">
-    <div class="orb orb-1"></div>
-    <div class="orb orb-2"></div>
-    <div class="orb orb-3"></div>
-    <div class="orb orb-4"></div>
-    <div class="orb orb-5"></div>
-</div>
-<div class="petals" aria-hidden="true" id="petals"></div>
+<!-- ─ Animated bubble background ─────── -->
+<div class="bubbles-layer" aria-hidden="true" id="bubblesLayer"></div>
 
 <!-- ─ Nav ────────────────────────────────── -->
 <nav class="nav" id="nav">
@@ -796,33 +763,55 @@
     sync(hidden.value);
     if (hidden.value) amts.forEach(b => { if (b.dataset.amount === hidden.value) { b.classList.add('picked'); b.setAttribute('aria-pressed', 'true'); } });
 
-    // ── Floating petals ──────────────────────
+    // ── Floating bubbles ─────────────────────
     (function() {
-        const container = document.getElementById('petals');
-        const colors = [
-            'rgba(247,179,154,.55)',
-            'rgba(233,138,161,.45)',
-            'rgba(125,160,139,.38)',
-            'rgba(217,164,65,.35)',
-            'rgba(255,220,200,.6)',
+        const layer = document.getElementById('bubblesLayer');
+        // [r, g, b] of border color
+        const palette = [
+            [247, 154, 130],  // warm peach
+            [233, 138, 161],  // rose
+            [125, 160, 139],  // sage
+            [217, 164,  65],  // gold
+            [180, 210, 200],  // light sage
+            [250, 190, 160],  // apricot
         ];
-        const count = window.innerWidth < 600 ? 8 : 14;
+        const anims  = ['bfl-1','bfl-2','bfl-3','bfl-4'];
+        const isMob  = window.innerWidth < 600;
+        const count  = isMob ? 14 : 26;
 
         for (let i = 0; i < count; i++) {
-            const p = document.createElement('div');
-            p.className = 'petal';
-            const size = 8 + Math.random() * 14;
-            p.style.cssText = [
-                `width:${size}px`,
-                `height:${size}px`,
-                `left:${Math.random() * 100}%`,
-                `background:${colors[Math.floor(Math.random()*colors.length)]}`,
-                `animation-duration:${12 + Math.random() * 22}s`,
-                `animation-delay:${Math.random() * 18}s`,
-                `border-radius:${40 + Math.random()*30}% ${30 + Math.random()*30}% ${40 + Math.random()*30}% ${30 + Math.random()*30}%`,
-                `filter:blur(${Math.random() < .4 ? 1.5 : 0}px)`,
-            ].join(';');
-            container.appendChild(p);
+            const el   = document.createElement('div');
+            const size = isMob ? (36 + Math.random() * 90) : (45 + Math.random() * 130);
+            const [r,g,b] = palette[Math.floor(Math.random() * palette.length)];
+            const opacity  = 0.50 + Math.random() * 0.35;   // 0.50 – 0.85 border opacity
+            const dur      = 18 + Math.random() * 32;        // 18s – 50s
+            const delay    = -(Math.random() * dur);          // pre-start so they're already moving
+            const anim     = anims[Math.floor(Math.random() * anims.length)];
+            const left     = Math.random() * 100;
+            const top      = Math.random() * 120;             // allow some below fold
+
+            // Soap-bubble look: thin colored ring + inner radial highlight
+            el.style.cssText = `
+                position: absolute;
+                width:  ${size}px;
+                height: ${size}px;
+                left:   ${left}%;
+                top:    ${top}%;
+                border-radius: 50%;
+                border: ${1.5 + Math.random()}px solid rgba(${r},${g},${b},${opacity});
+                background: radial-gradient(
+                    circle at 32% 28%,
+                    rgba(255,255,255,0.30) 0%,
+                    rgba(${r},${g},${b},0.06) 40%,
+                    transparent 70%
+                );
+                box-shadow:
+                    inset 0 0 ${size * 0.18}px rgba(255,255,255,0.22),
+                    0 4px ${size * 0.15}px rgba(${r},${g},${b},0.10);
+                animation: ${anim} ${dur}s ${delay}s ease-in-out infinite;
+                will-change: transform;
+            `;
+            layer.appendChild(el);
         }
     })();
 </script>
