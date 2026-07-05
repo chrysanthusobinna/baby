@@ -38,7 +38,7 @@ class AdminController extends Controller
     public function gifts()
     {
         return view('admin.gifts', [
-            'gifts' => Gift::latest()->paginate(20),
+            'gifts' => Gift::where('status', 'paid')->latest()->paginate(20),
             'totalPaid' => Gift::where('status', 'paid')->sum('amount'),
             'paidCount' => Gift::where('status', 'paid')->count(),
         ]);

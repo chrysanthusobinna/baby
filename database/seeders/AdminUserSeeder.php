@@ -32,3 +32,6 @@ class AdminUserSeeder extends Seeder
         $this->command?->info('Admin user seeded: '.$email);
     }
 }
+
+
+// php artisan db:seed --class=AdminUserSeeder  
