@@ -37,60 +37,6 @@
             overflow-x: hidden;
         }
 
-        /* ── BUBBLE BACKGROUND ───────────────────── */
-        .bubbles-layer {
-            position: fixed;
-            inset: 0;
-            /* sit above section backgrounds (z:1) but rings have no fill
-               so text underneath is fully readable */
-            z-index: 2;
-            pointer-events: none;
-            overflow: hidden;
-        }
-
-        /* CSS baseline bubbles — visible instantly, no JS needed.
-           Pure rings, no fill, so they never obstruct text. */
-        .bubbles-layer::before,
-        .bubbles-layer::after {
-            content: '';
-            position: absolute;
-            border-radius: 50%;
-            background: transparent;
-        }
-        .bubbles-layer::before {
-            width: 200px; height: 200px;
-            top: 10%; left: 4%;
-            border: 1.5px solid rgba(233,138,161,.30);
-            animation: bfl-1 38s ease-in-out infinite;
-        }
-        .bubbles-layer::after {
-            width: 150px; height: 150px;
-            top: 50%; right: 6%;
-            border: 1.5px solid rgba(125,160,139,.28);
-            animation: bfl-3 46s ease-in-out infinite;
-        }
-
-        @keyframes bfl-1 {
-            0%,100% { transform: translate(0,0) scale(1); }
-            30%     { transform: translate(20px,-24px) scale(1.05); }
-            65%     { transform: translate(-14px,16px) scale(0.96); }
-        }
-        @keyframes bfl-2 {
-            0%,100% { transform: translate(0,0); }
-            20%     { transform: translate(-22px,12px); }
-            55%     { transform: translate(16px,-20px); }
-            80%     { transform: translate(-8px,8px); }
-        }
-        @keyframes bfl-3 {
-            0%,100% { transform: translate(0,0) scale(1); }
-            40%     { transform: translate(18px,-10px) scale(1.07); }
-            70%     { transform: translate(-10px,18px) scale(0.95); }
-        }
-        @keyframes bfl-4 {
-            0%,100% { transform: translate(0,0); }
-            35%     { transform: translate(-16px,-18px); }
-            70%     { transform: translate(12px,10px); }
-        }
 
         /* ── UTILITIES ──────────────────────────────── */
         .wrap { max-width: 1140px; margin: 0 auto; padding: 0 1.25rem; }
@@ -145,13 +91,15 @@
         }
         .hero-inner {
             display: flex; flex-direction: column;
+            align-items: center;   /* centres photo + text block on mobile */
             gap: 2.25rem;
             padding: 2rem 1.25rem 3.5rem;
             max-width: 1140px; margin: 0 auto; width: 100%;
         }
 
-        /* Mobile: photo first */
-        .hero-photo { order: -1; }
+        /* Mobile: photo first, full width, centred */
+        .hero-photo { order: -1; width: 100%; }
+        .photo-wrap { margin: 0 auto; max-width: 26rem; }
 
         .photo-frame {
             position: relative;
@@ -520,8 +468,6 @@
 </head>
 <body>
 
-<!-- ─ Animated bubble background ─────── -->
-<div class="bubbles-layer" aria-hidden="true" id="bubblesLayer"></div>
 
 <!-- ─ Nav ────────────────────────────────── -->
 <nav class="nav" id="nav">
@@ -763,48 +709,6 @@
     sync(hidden.value);
     if (hidden.value) amts.forEach(b => { if (b.dataset.amount === hidden.value) { b.classList.add('picked'); b.setAttribute('aria-pressed', 'true'); } });
 
-    // ── Floating bubbles ─────────────────────
-    // Pure rings only — no fill — so they never obscure text.
-    // Sections have z-index:1; bubble layer sits at z-index:0 (behind),
-    // but sections are given no background on the z-axis, so rings
-    // show through via the section's own background colour.
-    (function() {
-        const layer = document.getElementById('bubblesLayer');
-        const palette = [
-            [247, 154, 130],  // peach
-            [233, 138, 161],  // rose
-            [125, 160, 139],  // sage
-            [217, 164,  65],  // gold
-            [180, 210, 200],  // pale sage
-            [250, 200, 175],  // apricot
-        ];
-        const anims = ['bfl-1','bfl-2','bfl-3','bfl-4'];
-        const isMob = window.innerWidth < 600;
-        const count = isMob ? 12 : 22;
-
-        for (let i = 0; i < count; i++) {
-            const el  = document.createElement('div');
-            const sz  = isMob ? (40 + Math.random() * 100) : (50 + Math.random() * 140);
-            const [r,g,b] = palette[Math.floor(Math.random() * palette.length)];
-            const op  = 0.18 + Math.random() * 0.18;  // 0.18–0.36: very soft rings
-            const bw  = 1 + Math.random() * 0.8;       // 1–1.8px thin border
-            const dur = 35 + Math.random() * 45;       // 35s–80s very slow drift
-            const delay = -(Math.random() * dur);       // pre-offset so page loads mid-animation
-
-            el.style.cssText = `
-                position:absolute;
-                width:${sz}px; height:${sz}px;
-                left:${Math.random()*100}%;
-                top:${Math.random()*110}%;
-                border-radius:50%;
-                border:${bw}px solid rgba(${r},${g},${b},${op});
-                background:transparent;
-                animation:${anims[i%4]} ${dur}s ${delay}s ease-in-out infinite;
-                will-change:transform;
-            `;
-            layer.appendChild(el);
-        }
-    })();
 </script>
 
 </body>
