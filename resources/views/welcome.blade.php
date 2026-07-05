@@ -292,8 +292,18 @@
             position: relative; z-index: 1;
             background: var(--sage-s);
             padding: 5rem 1.25rem 6rem;
+            overflow: hidden;
         }
-        .gift-inner { max-width: 1140px; margin: 0 auto; }
+        /* Faint photo watermark behind the form */
+        .gift::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: url('/images/jidenna-dedication-hero.png') center / cover no-repeat;
+            opacity: .07;
+            z-index: 0;
+        }
+        .gift-inner { position: relative; z-index: 1; max-width: 1140px; margin: 0 auto; }
 
         .gift-header { margin: 0 auto 2.5rem; max-width: 40rem; text-align: center; }
         .g-eyebrow {
@@ -399,16 +409,17 @@
         /* ── FOOTER ──────────────────────────────── */
         .site-footer {
             position: relative; z-index: 1;
-            background: var(--ink);
+            background: var(--peach-s);
+            border-top: 1px solid rgba(247,179,154,.25);
             padding: 2.75rem 1.25rem;
             text-align: center;
         }
         .footer-name {
             font-family: 'Fraunces', serif; font-style: italic;
-            font-weight: 300; font-size: 2rem; color: rgba(255,250,240,.7);
+            font-weight: 300; font-size: 2rem; color: var(--ink);
             margin-bottom: .4rem;
         }
-        .footer-copy { font-size: .82rem; color: rgba(255,250,240,.4); }
+        .footer-copy { font-size: .82rem; color: var(--muted); }
 
         /* ── FOCUS ───────────────────────────────── */
         :focus-visible { outline: 2.5px solid var(--gold); outline-offset: 3px; border-radius: .4rem; }
