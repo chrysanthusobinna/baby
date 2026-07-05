@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Stripe\Exception\ApiErrorException;
 use Stripe\StripeClient;
 
 Route::get('/', function () {
@@ -37,21 +38,21 @@ Route::post('/checkout', function (Request $request) {
                     'currency' => 'gbp',
                     'unit_amount' => $amountInPence,
                     'product_data' => [
-                        'name' => "Gift for Jidenna's Baby Dedication",
+                        'name' => "Gift for Jidenna's Baby Welcome",
                         'description' => 'A blessing gift for Jidenna and the family.',
                     ],
                 ],
             ]],
             'payment_intent_data' => [
-                'description' => "Gift for Jidenna's Baby Dedication",
+                'description' => "Gift for Jidenna's Baby Welcome",
             ],
             'metadata' => [
-                'occasion' => 'jidenna_baby_dedication',
+                'occasion' => 'jidenna_baby_welcome',
                 'gift_amount_gbp' => (string) $validated['amount'],
                 'baby_message' => $validated['message'] ?? '',
             ],
         ]);
-    } catch (\Stripe\Exception\ApiErrorException $e) {
+    } catch (ApiErrorException $e) {
         logger()->error('Stripe checkout error: '.$e->getMessage());
 
         return back()
@@ -79,7 +80,7 @@ Route::get('/payment/success', function (Request $request) {
         $stripe = new StripeClient($secret);
         $session = $stripe->checkout->sessions->retrieve($sessionId);
         $paid = $session->payment_status === 'paid';
-    } catch (\Stripe\Exception\ApiErrorException $e) {
+    } catch (ApiErrorException $e) {
         logger()->error('Stripe session retrieval error: '.$e->getMessage());
         $paid = false;
     }

@@ -4,6 +4,23 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Welcome, Jidenna</title>
+    <meta name="description" content="Join us in welcoming Jidenna with love, prayer, gratitude, and a blessing gift for his baby welcome.">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Welcome, Jidenna">
+    <meta property="og:description" content="A precious new life, welcomed with joy. Celebrate Jidenna's baby welcome with love, prayer, and a blessing gift.">
+    <meta property="og:image" content="{{ asset('images/jidenna-welcome-hero.png') }}">
+    <meta property="og:image:secure_url" content="{{ secure_asset('images/jidenna-welcome-hero.png') }}">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:width" content="1024">
+    <meta property="og:image:height" content="1536">
+    <meta property="og:image:alt" content="A warm baby welcome gift arrangement for Jidenna">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:site_name" content="Jidenna's Baby Welcome">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Welcome, Jidenna">
+    <meta name="twitter:description" content="Celebrate Jidenna's baby welcome with love, prayer, and a blessing gift.">
+    <meta name="twitter:image" content="{{ asset('images/jidenna-welcome-hero.png') }}">
+    <link rel="icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -98,11 +115,22 @@
         }
 
         /* Mobile: photo first, full width, centred */
-        .hero-photo { order: -1; width: 100%; }
-        .photo-wrap { margin: 0 auto; max-width: 26rem; }
+        .hero-photo {
+            display: grid;
+            order: -1;
+            width: 100%;
+            place-items: center;
+        }
+        .photo-wrap {
+            width: min(100%, 26rem);
+            max-width: 26rem;
+            margin-inline: auto;
+        }
 
         .photo-frame {
             position: relative;
+            width: 100%;
+            margin-inline: auto;
             border-radius: 1.5rem;
             overflow: hidden;
             aspect-ratio: 3/4;
@@ -111,7 +139,7 @@
         }
         .photo-frame img {
             width: 100%; height: 100%;
-            object-fit: cover; display: block;
+            object-fit: cover; object-position: center center; display: block;
         }
         .photo-frame::after {
             content: '';
@@ -299,7 +327,7 @@
             content: '';
             position: absolute;
             inset: 0;
-            background: url('/images/jidenna-dedication-hero.png') center / cover no-repeat;
+            background: url('/images/jidenna-welcome-hero.png') center / cover no-repeat;
             opacity: .18;
             z-index: 0;
         }
@@ -469,6 +497,22 @@
             .amounts { grid-template-columns: repeat(4,1fr); }
         }
 
+        @media (max-width: 767px) {
+            .hero-photo {
+                justify-items: center;
+                padding-inline: 0;
+            }
+
+            .photo-wrap {
+                width: min(100%, 24.5rem);
+                justify-self: center;
+            }
+
+            .photo-frame {
+                max-width: 100%;
+            }
+        }
+
         @media (min-width: 1024px) {
             .hero-inner { padding: 2rem 2rem 5rem; }
             .story { padding: 7rem 2rem; }
@@ -501,7 +545,7 @@
         <div class="hero-photo phi">
             <div class="photo-wrap">
                 <div class="photo-frame">
-                    <img src="{{ asset('images/jidenna-dedication-hero.png') }}" alt="Jidenna — welcomed with love">
+                    <img src="{{ asset('images/jidenna-welcome-hero.png') }}" alt="Jidenna — welcomed with love">
                     <div class="photo-pill">
                         <i aria-hidden="true" class="ph-fill ph-heart"></i>
                         He's here
