@@ -3,12 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\Gift;
+use App\Services\GiftPaymentSync;
 use Illuminate\Http\Request;
 use Stripe\Exception\ApiErrorException;
 use Stripe\StripeClient;
 
 class CheckoutController extends Controller
 {
+    public function __construct(private readonly GiftPaymentSync $giftPaymentSync) {}
+
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -98,6 +101,10 @@ class CheckoutController extends Controller
             $stripe = new StripeClient($secret);
             $session = $stripe->checkout->sessions->retrieve($sessionId);
             $paid = $session->payment_status === 'paid';
+
+            if ($paid) {
+                $this->giftPaymentSync->syncFromCheckoutSession($session, 'paid');
+            }
         } catch (ApiErrorException $e) {
             logger()->error('Stripe session retrieval error: '.$e->getMessage());
             $paid = false;
