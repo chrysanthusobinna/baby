@@ -359,6 +359,30 @@
         .alert-w   { background: rgba(217,164,65,.1);  border: 1px solid rgba(217,164,65,.32);  color: #8a6300; }
         .alert-err { background: rgba(233,138,161,.1); border: 1px solid rgba(233,138,161,.32); color: #b84567; }
 
+        /* Toast */
+        .toast-wrap {
+            position: fixed; top: 1.25rem; left: 50%;
+            transform: translate(-50%, -140%);
+            z-index: 1000; width: min(92vw, 26rem);
+            transition: transform .45s cubic-bezier(.2,.8,.2,1), opacity .45s ease;
+            opacity: 0;
+        }
+        .toast-wrap.show { transform: translate(-50%, 0); opacity: 1; }
+        .toast {
+            display: flex; align-items: flex-start; gap: .7rem;
+            padding: .95rem 1.1rem; border-radius: .9rem;
+            font-weight: 600; font-size: .9rem;
+            background: #fff; border: 1px solid rgba(125,160,139,.28);
+            color: var(--sage);
+            box-shadow: 0 16px 40px rgba(46,38,32,.16);
+        }
+        .toast i { font-size: 1.2rem; flex-shrink: 0; margin-top: .05rem; }
+        .toast-close {
+            margin-left: auto; background: none; border: none; cursor: pointer;
+            color: inherit; opacity: .55; font-size: 1.1rem; line-height: 1; padding: 0;
+        }
+        .toast-close:hover { opacity: 1; }
+
         /* Gift card */
         .gift-card {
             background: rgba(255,255,255,.74);
@@ -524,6 +548,17 @@
 </head>
 <body>
 
+@if (($paymentStatus ?? null) === 'success')
+    <div class="toast-wrap" id="giftToast">
+        <div class="toast">
+            <i aria-hidden="true" class="ph-fill ph-check-circle"></i>
+            <span>Thank you — your gift was received. Jidenna is so loved.</span>
+            <button type="button" class="toast-close" aria-label="Dismiss" onclick="document.getElementById('giftToast').classList.remove('show')">
+                <i aria-hidden="true" class="ph ph-x"></i>
+            </button>
+        </div>
+    </div>
+@endif
 
 <!-- ─ Nav ────────────────────────────────── -->
 <nav class="nav" id="nav">
@@ -641,12 +676,7 @@
             <h2 class="g-h2">Send a blessing.</h2>
         </div>
 
-        @if (($paymentStatus ?? null) === 'success')
-            <div class="alert alert-ok reveal">
-                <i aria-hidden="true" class="ph-fill ph-check-circle"></i>
-                <span>Thank you — your gift was received. Jidenna is so loved.</span>
-            </div>
-        @elseif (($paymentStatus ?? null) === 'cancel')
+        @if (($paymentStatus ?? null) === 'cancel')
             <div class="alert alert-w reveal">
                 <i aria-hidden="true" class="ph ph-warning"></i>
                 <span>Payment cancelled — choose an amount below whenever you're ready.</span>
@@ -712,6 +742,13 @@
 </footer>
 
 <script>
+    // ── Toast ───────────────────────────────
+    const toast = document.getElementById('giftToast');
+    if (toast) {
+        requestAnimationFrame(() => toast.classList.add('show'));
+        setTimeout(() => toast.classList.remove('show'), 6000);
+    }
+
     // ── Nav ─────────────────────────────────
     const nav = document.getElementById('nav');
     window.addEventListener('scroll', () => {

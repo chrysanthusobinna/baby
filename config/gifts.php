@@ -1,5 +1,5 @@
 <?php
 
 return [
-    'notification_email' => env('GIFT_NOTIFICATION_EMAIL'),
+    'notification_email' => env('ADMIN_EMAIL'),
 ];

@@ -103,10 +103,4 @@ php artisan db:seed --class=AdminUserSeeder
 
 ## Gift Notifications
 
-Send paid gift notifications to a separate email address:
-
-```env
-GIFT_NOTIFICATION_EMAIL=gifts@example.com
-```
-
-Configure your mail provider through the usual Laravel `MAIL_*` environment variables.
+Paid gift notifications are sent to `ADMIN_EMAIL`. Configure your mail provider through the usual Laravel `MAIL_*` environment variables.
